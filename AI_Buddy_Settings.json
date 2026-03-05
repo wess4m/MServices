@@ -1,0 +1,12 @@
+{
+  "AIProvider": "DeepSeek",
+  "AIPromptURL": "http://localhost:11434/api/generate",
+  "AIPromptKey": null,
+  "PromptLLMName": "deepseek-coder-v2",
+  "IsPromptResponseStreaming": false,
+  "CodingLanguage": "C#",
+  "TestFramework": "MSTest",
+  "DateLastModified": "2026-03-04T04:55:51.3963194+02:00",
+  "LastPrompt": null,
+  "SettingsFilename": "AI_Buddy_Settings.json"
+}

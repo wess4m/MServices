@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/FrontEnd/">
+    <Project Path="Store/Store.csproj" Id="33a8abc7-caf7-4a06-bd1d-47940ff71f5f" />
+  </Folder>
+  <Folder Name="/Gateway/" />
+  <Folder Name="/Integration/" />
+  <Folder Name="/Services/">
+    <Project Path="CouponAPI/CouponAPI.csproj" Id="00185e41-dbc6-4f43-bcaf-bfac74ad8759" />
+  </Folder>
+</Solution>
