@@ -20,7 +20,7 @@ namespace Store.Service
             HttpRequestMessage message = new();
             message.Headers.Add("Accept", "application/json");
             //Authintication token goes here
-            message.RequestUri = new Uri(requestDto.URL);
+            message.RequestUri = new Uri(requestDto.Url);
             if (requestDto.Data != null)
             {
                 message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");

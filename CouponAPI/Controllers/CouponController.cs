@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CouponAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
     [ApiController]
     public class CouponController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace CouponAPI.Controllers
         {
             try
             {
-                _Resp.Result = _map.Map<List<CouponDto>>(_db.Coupons.ToList());
+                _Resp.Result = _map.Map<List<CouponDto>>(_db.Coupons.OrderByDescending(x=>x.CouponId).ToList());
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace CouponAPI.Controllers
             return _Resp;
         }
         [HttpGet]
-        [Route("{Code}")]
+        [Route("GetByCode/{Code}")]
         public ResponseDto GetByCode(string Code)
         {
             try
@@ -99,6 +99,7 @@ namespace CouponAPI.Controllers
             return _Resp;
         }
         [HttpDelete]
+        [Route("{id:int}")]
         public ResponseDto Delete(int Id)
         {
             try
