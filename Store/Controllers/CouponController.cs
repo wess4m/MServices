@@ -20,6 +20,10 @@ namespace Store.Controllers
             {
                 coupons = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(Response.Result));
             }
+            else
+            {
+                @TempData["Error"] = Response?.Message;
+            }
             return View(coupons);
         }
         public async Task<IActionResult> CreateCoupon()
