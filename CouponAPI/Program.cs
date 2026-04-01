@@ -1,9 +1,16 @@
 using AutoMapper;
 using CouponAPI;
+using CouponAPI.Authentication;
 using CouponAPI.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.OpenApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using Scalar.AspNetCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +18,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSingleton(MappingConfig.RegisterMaps().CreateMapper());
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 
-var app = builder.Build();
-app.MapScalarApiReference();
+// Call extension method to add authentication
+builder.AddAuthentication();
 
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+});
+
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
+
+app.MapScalarApiReference(options => options
+    .AddPreferredSecuritySchemes("Bearer")
+    .AddHttpAuthentication("Bearer", auth =>
+    {
+        auth.Token = "";
+    }));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,6 +50,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -40,7 +62,7 @@ using (var scope = app.Services.CreateScope())
     if (db.Database.GetPendingMigrations().Count() > 0)
     {
         db.Database.Migrate();
-    }    
+    }
 }
 
 app.Run();

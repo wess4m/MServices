@@ -7,5 +7,6 @@
   <Folder Name="/Services/">
     <Project Path="AuthAPI/AuthAPI.csproj" Id="56a5b541-d010-41f2-bb21-8e116f0f66f2" />
     <Project Path="CouponAPI/CouponAPI.csproj" Id="00185e41-dbc6-4f43-bcaf-bfac74ad8759" />
+    <Project Path="ProductAPI/ProductAPI.csproj" />
   </Folder>
 </Solution>

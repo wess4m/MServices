@@ -5,15 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using CouponAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using CouponAPI.Utility;
 
 namespace CouponAPI.Controllers
 {
     [Route("api/coupon")]
     [ApiController]
+    [Authorize]
     public class CouponController : ControllerBase
     {
         readonly ApplicationDBContext _db;
-        private ResponseDto _Resp;
+        private ResponseDTO _Resp;
         private IMapper _map;
         public CouponController(ApplicationDBContext db, IMapper map)
         {
@@ -23,7 +26,7 @@ namespace CouponAPI.Controllers
         }
 
         [HttpGet]
-        public ResponseDto Get()
+        public ResponseDTO Get()
         {
             try
             {
@@ -38,7 +41,7 @@ namespace CouponAPI.Controllers
         }
         [HttpGet]
         [Route("{id:int}")]
-        public ResponseDto ResponseDto(int id)
+        public ResponseDTO ResponseDTO(int id)
         {
             try
             {
@@ -53,7 +56,7 @@ namespace CouponAPI.Controllers
         }
         [HttpGet]
         [Route("GetByCode/{Code}")]
-        public ResponseDto GetByCode(string Code)
+        public ResponseDTO GetByCode(string Code)
         {
             try
             {
@@ -67,7 +70,8 @@ namespace CouponAPI.Controllers
             return _Resp;
         }
         [HttpPost]
-        public ResponseDto Add([FromBody] CouponDto dto)
+        [Authorize(Roles = SD.AdminRole)]
+        public ResponseDTO Add([FromBody] CouponDto dto)
         {
             try
             {
@@ -83,7 +87,8 @@ namespace CouponAPI.Controllers
             return _Resp;
         }
         [HttpPut]
-        public ResponseDto Update([FromBody] CouponDto dto)
+        [Authorize(Roles = SD.AdminRole)]
+        public ResponseDTO Update([FromBody] CouponDto dto)
         {
             try
             {
@@ -100,7 +105,8 @@ namespace CouponAPI.Controllers
         }
         [HttpDelete]
         [Route("{id:int}")]
-        public ResponseDto Delete(int Id)
+        [Authorize(Roles = SD.AdminRole)]
+        public ResponseDTO Delete(int Id)
         {
             try
             {

@@ -10,22 +10,32 @@ namespace Store.Service
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public BaseService(IHttpClientFactory httpClientFactory)
+        private readonly ITokenProvider _tokenProvider;
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
-                _httpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory;
+            _tokenProvider = tokenProvider;
         }
-        public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
+        public async Task<ResponseDTO?> SendAsync(RequestDTO RequestDTO, bool withBearer = true)
         {
             HttpClient client = _httpClientFactory.CreateClient("StoreAPI");
             HttpRequestMessage message = new();
             message.Headers.Add("Accept", "application/json");
             //Authintication token goes here
-            message.RequestUri = new Uri(requestDto.Url);
-            if (requestDto.Data != null)
+            if (withBearer)
             {
-                message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
+                var token = _tokenProvider.GetToken();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
             }
-            switch (requestDto.ApiType)
+            message.RequestUri = new Uri(RequestDTO.Url);
+            if (RequestDTO.Data != null)
+            {
+                message.Content = new StringContent(JsonConvert.SerializeObject(RequestDTO.Data), Encoding.UTF8, "application/json");
+            }
+            switch (RequestDTO.ApiType)
             {
                 case ApiType.GET:
                     message.Method = HttpMethod.Get;
@@ -58,12 +68,12 @@ namespace Store.Service
                     return new() { IsSuccess = false, Message = "Internal Server Error" };
                 default:
                     var ApiContent= await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ResponseDto>(ApiContent);  
+                    return JsonConvert.DeserializeObject<ResponseDTO>(ApiContent);  
             }
             }
             catch (Exception ex)
             {
-                return new ResponseDto() { IsSuccess = false, Message = ex.Message };
+                return new ResponseDTO() { IsSuccess = false, Message = ex.Message };
             }
 
         }

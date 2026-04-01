@@ -2,7 +2,7 @@
 
 namespace Store.Models
 {
-    public class RequestDto
+    public class RequestDTO
     {
         public ApiType ApiType { get; set; } = ApiType.GET;
         public string Url { get; set; }

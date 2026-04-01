@@ -15,7 +15,7 @@ namespace Store.Controllers
         public async Task<IActionResult> CouponIndex()
         {
             List<CouponDto>? coupons = new();
-            ResponseDto? Response = await _couponService.GetAllCoupons();
+            ResponseDTO? Response = await _couponService.GetAllCoupons();
             if (Response != null && Response.IsSuccess)
             {
                 coupons = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(Response.Result));

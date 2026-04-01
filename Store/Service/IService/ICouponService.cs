@@ -4,11 +4,11 @@ namespace Store.Service.IService
 {
     public interface ICouponService
     {
-        Task<ResponseDto?> GetCouponAsync(string couponeCode);
-        Task<ResponseDto?> GetAllCoupons();
-        Task<ResponseDto?> GetCouponByIdAsync(int id);
-        Task<ResponseDto?> CreateCouponAsync(CouponDto couponDto);
-        Task<ResponseDto?> UpdateCouponAsync(CouponDto couponDto);
-        Task<ResponseDto?> DeleteCouponAsync(int id);
+        Task<ResponseDTO?> GetCouponAsync(string couponeCode);
+        Task<ResponseDTO?> GetAllCoupons();
+        Task<ResponseDTO?> GetCouponByIdAsync(int id);
+        Task<ResponseDTO?> CreateCouponAsync(CouponDto couponDto);
+        Task<ResponseDTO?> UpdateCouponAsync(CouponDto couponDto);
+        Task<ResponseDTO?> DeleteCouponAsync(int id);
     }
 }
