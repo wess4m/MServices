@@ -13,7 +13,10 @@
             <div class="col-6">
             </div>
             <div class="col-6 text-end">
-                <a class="btn btn-outline-primary" asp-action="CreateProduct"><i class="bi bi-plus-square"></i> Create New Product</a>
+            @if (User.Identity.IsAuthenticated)
+              {
+                  <a class="btn btn-outline-primary" asp-action="CreateProduct"><i class="bi bi-plus-square"></i> Create New Product</a>
+              }       
             </div>
         </div>
         <table class="table">
@@ -31,7 +34,10 @@
                     <th>
                         Product Image
                     </th>
-                    <th></th>
+                    @if (User.Identity.IsAuthenticated)
+                      {
+                           <th></th>
+                      }
                 </tr>
             </thead>
             <tbody>
@@ -42,11 +48,14 @@
                         <td>@item.Price.ToString("c")</td>
                         <td>@item.Description</td>
                         <td class="w-25"><img src="/products/@item.ImageUrl/" class="img-thumbnail w-50"/></td>
-                        <td>
-                            <a class="btn btn-danger" onclick="DeleteProduct(@item.ProductId)">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <td>
+                                <a class="btn btn-danger" onclick="DeleteProduct(@item.ProductId)">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>

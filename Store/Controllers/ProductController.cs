@@ -22,7 +22,8 @@ namespace Store.Controllers
             }
             else
             {
-                @TempData["Error"] = Response?.Message;
+                TempData["Error"] = Response?.Message;
+                return RedirectToAction("Index", "Home");
             }
             return View(Products);
         }
@@ -33,12 +34,20 @@ namespace Store.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductDto _ProductDto)
         {
-            await _ProductService.CreateProductAsync(_ProductDto);
+            var response = await _ProductService.CreateProductAsync(_ProductDto);
+            if (!response.IsSuccess)
+            {
+                TempData["Error"] = response?.Message;
+            }
             return RedirectToAction(nameof(ProductIndex));
         }
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            await _ProductService.DeleteProductAsync(id);
+            var response = await _ProductService.DeleteProductAsync(id);
+            if (!response.IsSuccess)
+            {
+                TempData["Error"] = response?.Message;
+            }
             return RedirectToAction(nameof(ProductIndex));
         }
     }

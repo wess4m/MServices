@@ -1,8 +1,40 @@
-﻿@{
+﻿@model List<ProductDto>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome <i class="bi bi-emoji-smile-fill"></i></h1>
-    <p>Please use the above menu  <i class="bi bi-arrow-bar-up"></i> to navigate.</p>
+    <h4>Trendy finds, tiny prices <i class="bi bi-basket"></i></h4>
 </div>
+
+<form>
+    <div class="container row">
+        @foreach (var item in Model)
+        {
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="p-0 my-3 border rounded">
+                    <div class="card">
+                        <h3 class="card-title text-white-50 text-center py-2">@item.Name</h3>
+                        <img src="/products/@item.ImageUrl" class="card-img-top" style="height: 200px; object-fit:scale-down;" alt="Product Image">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between py-2">
+                                <span class="text-danger" style="font-size:20px;">@item.Price.ToString("c")</span>
+                                <span class="badge bg-warning text-white p-2">@item.CategoryName</span>
+                            </div>
+
+                            <p class="card-text">@item.Description</p>
+
+                            <div class="row">
+                                <div class="col">
+                                    <a class="btn btn-success form-control">Buy</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</form>

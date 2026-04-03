@@ -29,15 +29,21 @@
                         Minimum Amount
                     </th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.CouponCode</td>
-                        <td>@item.DiscountAmount.ToString("c")</td>
-                        <td>@item.MinAmount.ToString("c")</td>
+                        <td class="w-50">@item.CouponCode</td>
+                        <td class ="w-25">@item.DiscountAmount.ToString("c")</td>
+                        <td class="w-25">@item.MinAmount.ToString("c")</td>
+                        <td>
+                            <a class="btn btn-success" asp-action="UpdateCoupon" asp-controller="Coupon" asp-route-id="@item.CouponId">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
                         <td>
                             <a class="btn btn-danger" onclick="DeleteCoupon(@item.CouponId)">
                                 <i class="bi bi-trash"></i>

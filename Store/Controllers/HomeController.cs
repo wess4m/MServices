@@ -1,14 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Store.Models;
+using Store.Service.IService;
 using System.Diagnostics;
 
 namespace Store.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IProductService _ProductService;
+        public HomeController(IProductService ProductService)
         {
-            return View();
+            _ProductService = ProductService;
+        }
+        public async Task<IActionResult> Index()
+        {
+            List<ProductDto>? Products = new();
+            ResponseDTO? Response = await _ProductService.GetAllProducts();
+            if (Response != null && Response.IsSuccess)
+            {
+                Products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(Response.Result));
+            }
+            else
+            {
+                @TempData["Error"] = Response?.Message;
+            }
+            return View(Products);
         }
 
         public IActionResult Privacy()
