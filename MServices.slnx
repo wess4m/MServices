@@ -2,11 +2,10 @@
   <Folder Name="/FrontEnd/">
     <Project Path="Store/Store.csproj" Id="33a8abc7-caf7-4a06-bd1d-47940ff71f5f" />
   </Folder>
-  <Folder Name="/Gateway/" />
-  <Folder Name="/Integration/" />
   <Folder Name="/Services/">
     <Project Path="AuthAPI/AuthAPI.csproj" Id="56a5b541-d010-41f2-bb21-8e116f0f66f2" />
     <Project Path="CouponAPI/CouponAPI.csproj" Id="00185e41-dbc6-4f43-bcaf-bfac74ad8759" />
     <Project Path="ProductAPI/ProductAPI.csproj" />
+    <Project Path="ShopingCartAPI/ShoppingCartAPI.csproj" Id="3848b29a-7386-4a7b-9bd6-1ad749ae5af7" />
   </Folder>
 </Solution>

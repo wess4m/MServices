@@ -60,7 +60,12 @@ namespace CouponAPI.Controllers
         {
             try
             {
-                _Resp.Result = _map.Map<CouponDto>(_db.Coupons.Where(x => x.CouponCode.ToLower() == Code.ToLower().TrimEnd()).First());
+                _Resp.Result = _map.Map<CouponDto>(_db.Coupons.Where(x => x.CouponCode.ToLower() == Code.ToLower().TrimEnd()).FirstOrDefault());
+                if (_Resp.Result == null)
+                {
+                    _Resp.IsSuccess = false;
+                    _Resp.Message = "Invalid coupon code!";
+                }
             }
             catch (Exception ex)
             {
