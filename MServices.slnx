@@ -8,4 +8,7 @@
     <Project Path="ProductAPI/ProductAPI.csproj" />
     <Project Path="ShopingCartAPI/ShoppingCartAPI.csproj" Id="3848b29a-7386-4a7b-9bd6-1ad749ae5af7" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../../../../../tmp/mservices/docker-compose.yml" />
+  </Folder>
 </Solution>
