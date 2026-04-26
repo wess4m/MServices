@@ -8,9 +8,9 @@ namespace Store.Service
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly IBaseService _baseService;
-        public ShoppingCartService(IBaseService baseService)
+        public ShoppingCartService(HttpClient httpClient, ITokenProvider tokenProvider)
         {
-            _baseService = baseService;
+            _baseService = new BaseService(httpClient, tokenProvider);
         }
         public async Task<ResponseDTO> ApplyCouponAsync(CartDto cartDto)
         {

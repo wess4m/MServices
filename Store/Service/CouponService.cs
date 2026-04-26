@@ -8,9 +8,9 @@ namespace Store.Service
     public class CouponService : ICouponService
     {
         private readonly IBaseService _baseService;
-        public CouponService(IBaseService baseService)
+        public CouponService(HttpClient httpClient, ITokenProvider tokenProvider)
         {
-            _baseService = baseService;
+            _baseService = new BaseService(httpClient, tokenProvider);
         }
 
         public async Task<ResponseDTO?> CreateCouponAsync(CouponDto couponDto)

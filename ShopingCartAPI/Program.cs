@@ -18,6 +18,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -28,6 +30,9 @@ builder.Services.AddSingleton(MappingConfig.RegisterMaps().CreateMapper());
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+
+// For Aspire
+builder.AddServiceDefaults();
 
 //=============================================================================================================================
 // --- API Client Configuration ---
@@ -54,6 +59,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
 app.MapScalarApiReference(options => options
     .AddPreferredSecuritySchemes("Bearer")
     .AddHttpAuthentication("Bearer", auth =>
@@ -67,7 +73,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

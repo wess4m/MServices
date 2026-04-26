@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/FrontEnd/">
+    <File Path="docker-compose.yml" />
     <Project Path="Store/Store.csproj" Id="33a8abc7-caf7-4a06-bd1d-47940ff71f5f" />
   </Folder>
   <Folder Name="/Services/">
@@ -8,7 +9,6 @@
     <Project Path="ProductAPI/ProductAPI.csproj" />
     <Project Path="ShopingCartAPI/ShoppingCartAPI.csproj" Id="3848b29a-7386-4a7b-9bd6-1ad749ae5af7" />
   </Folder>
-  <Folder Name="/Solution Items/">
-    <File Path="../../../../../tmp/mservices/docker-compose.yml" />
-  </Folder>
+  <Project Path="MServices.AppHost/MServices.AppHost.csproj" Id="0620cddd-8f53-444e-aac7-2f818f0e9fbf" />
+  <Project Path="MServices.ServiceDefaults/MServices.ServiceDefaults.csproj" />
 </Solution>

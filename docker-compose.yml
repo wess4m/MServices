@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # 1. Add the Database Service
+  sql-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrongPassword123!
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrongPassword123! -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mservices-network
+
+  # 2. Update your APIs to wait for the DB Healthcheck
+  authapi:
+    build:
+      context: .
+      dockerfile: AuthAPI/Dockerfile
+    container_name: authapi
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=.;Database=AuthDb;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True
+    depends_on:
+      sql-db:
+        condition: service_healthy # This ensures migrations run only when DB is ready
+    networks:
+      - mservices-network
+
+  productapi:
+    build:
+      context: .
+      dockerfile: ProductAPI/Dockerfile
+    container_name: productapi
+    ports:
+      - "5002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=.;Database=ProductDb;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True
+    depends_on:
+      sql-db:
+        condition: service_healthy
+    networks:
+      - mservices-network
+
+  couponapi:
+    build:
+      context: .
+      dockerfile: CouponAPI/Dockerfile
+    container_name: couponapi
+    ports:
+      - "5003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=.;Database=CouponDb;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True
+    depends_on:
+      sql-db:
+        condition: service_healthy
+    networks:
+      - mservices-network
+
+  shoppingcartapi:
+    build:
+      context: .
+      dockerfile: ShopingCartAPI/Dockerfile
+    container_name: shoppingcartapi
+    ports:
+      - "5004:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=.;Database=ShoppingCartDb;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True
+    depends_on:
+      sql-db:
+        condition: service_healthy
+    networks:
+      - mservices-network
+
+  store:
+    build:
+      context: .
+      dockerfile: Store/Dockerfile
+    container_name: store
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - authapi
+      - productapi
+      - couponapi
+      - shoppingcartapi
+    networks:
+      - mservices-network
+
+networks:
+  mservices-network:
+    driver: bridge

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
-using Store.Models;
+﻿using Store.Models;
 using Store.Service.IService;
 using Store.Utility;
 
@@ -8,9 +7,10 @@ namespace Store.Service
     public class ProductService : IProductService
     {
         private readonly IBaseService _baseService;
-        public ProductService(IBaseService baseService)
+
+        public ProductService(HttpClient httpClient, ITokenProvider tokenProvider)
         {
-            _baseService = baseService;
+            _baseService = new BaseService(httpClient, tokenProvider);
         }
 
         public async Task<ResponseDTO?> CreateProductAsync(ProductDto ProductDto)
@@ -19,7 +19,7 @@ namespace Store.Service
             {
                 ApiType = SD.ApiType.POST,
                 Data = ProductDto,
-                Url = SD.ProductAPIBase + "/api/Product"
+                Url = "/api/Product" // Use relative path; BaseAddress is handled by Aspire
             });
         }
 
@@ -28,7 +28,7 @@ namespace Store.Service
             return await _baseService.SendAsync(new RequestDTO()
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = SD.ProductAPIBase + $"/api/Product/{id.ToString()}"
+                Url = SD.ProductAPIBase + $"/api/Product/{id}"
             });
         }
 
@@ -55,7 +55,7 @@ namespace Store.Service
             return await _baseService.SendAsync(new RequestDTO()
             {
                 ApiType = SD.ApiType.GET,
-                Url = SD.ProductAPIBase + $"/api/Product/{id.ToString()}"
+                Url = SD.ProductAPIBase + $"/api/Product/{id}"
             });
         }
 
@@ -65,7 +65,7 @@ namespace Store.Service
             {
                 ApiType = SD.ApiType.PUT,
                 Data = ProductDto,
-                Url = SD.ProductAPIBase + $"/api/Product"
+                Url = SD.ProductAPIBase + "/api/Product"
             });
         }
     }
